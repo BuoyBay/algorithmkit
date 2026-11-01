@@ -1,0 +1,97 @@
+''' Half-open matching range [First, Finish); an absent value has First = Finish.
+Structure MatchRange
+    First As Integer
+    Finish As Integer
+End Structure
+
+Public Interface Ordering Of T
+    Function Compare(a As T, b As T) As Integer
+End Interface
+
+Public Interface Selection Of T
+    Function Matches(value As T) As Boolean
+End Interface
+
+
+Private Sub CheckRange(length As Integer, first As Integer, finish As Integer)
+    If first < 0 Or finish < first Or finish > length Then
+        Throw New InvalidArgumentException("AlgorithmKit requires 0 <= first <= finish <= count")
+    End If
+End Sub
+
+''' First index whose element does not precede value, in [first, finish].
+Public Function LowerBound Of T(items As Array Of T, value As T, compare As Ordering Of T, first As Integer, finish As Integer) As Integer
+    CheckRange(Array.Count(items), first, finish)
+    If compare Is Nil Then Throw New InvalidArgumentException("AlgorithmKit ordering must not be Nil")
+    Dim lo As Integer = first
+    Dim hi As Integer = finish
+    While lo < hi
+        Dim mid As Integer = lo + (hi - lo) \ 2
+        If compare.Compare(items(mid), value) < 0 Then
+            lo = mid + 1
+        Else
+            hi = mid
+        End If
+    End While
+    Return lo
+End Function
+
+''' First index whose element follows value, in [first, finish].
+Public Function UpperBound Of T(items As Array Of T, value As T, compare As Ordering Of T, first As Integer, finish As Integer) As Integer
+    CheckRange(Array.Count(items), first, finish)
+    If compare Is Nil Then Throw New InvalidArgumentException("AlgorithmKit ordering must not be Nil")
+    Dim lo As Integer = first
+    Dim hi As Integer = finish
+    While lo < hi
+        Dim mid As Integer = lo + (hi - lo) \ 2
+        If compare.Compare(items(mid), value) <= 0 Then
+            lo = mid + 1
+        Else
+            hi = mid
+        End If
+    End While
+    Return lo
+End Function
+
+Public Function EqualRange Of T(items As Array Of T, value As T, compare As Ordering Of T, first As Integer, finish As Integer) As MatchRange
+    Dim lo As Integer = LowerBound Of T(items, value, compare, first, finish)
+    Dim hi As Integer = UpperBound Of T(items, value, compare, lo, finish)
+    Return { First: lo, Finish: hi }
+End Function
+
+''' First equivalent index, or -1 when absent (never an arbitrary duplicate).
+Public Function BinarySearch Of T(items As Array Of T, value As T, compare As Ordering Of T, first As Integer, finish As Integer) As Integer
+    Dim index As Integer = LowerBound Of T(items, value, compare, first, finish)
+    If index < finish Then
+        If compare.Compare(items(index), value) = 0 Then Return index
+    End If
+    Return -1
+End Function
+
+Public Function FindIndex Of T(items As Array Of T, matches As Selection Of T, first As Integer, finish As Integer) As Integer
+    CheckRange(Array.Count(items), first, finish)
+    If matches Is Nil Then Throw New InvalidArgumentException("AlgorithmKit selection must not be Nil")
+    For i As Integer = first To finish - 1
+        If matches.Matches(items(i)) Then Return i
+    Next
+    Return -1
+End Function
+
+Public Function FindLastIndex Of T(items As Array Of T, matches As Selection Of T, first As Integer, finish As Integer) As Integer
+    CheckRange(Array.Count(items), first, finish)
+    If matches Is Nil Then Throw New InvalidArgumentException("AlgorithmKit selection must not be Nil")
+    For i As Integer = finish - 1 To first Step -1
+        If matches.Matches(items(i)) Then Return i
+    Next
+    Return -1
+End Function
+
+''' Shallow copy sorted stably by the builtin comparator sort.
+Public Function SortedCopy Of T(items As Array Of T, compare As Ordering Of T) As Array Of T
+    If compare Is Nil Then Throw New InvalidArgumentException("AlgorithmKit ordering must not be Nil")
+    Dim output As Array Of T = Array.Clone(items)
+    Array.Sort(output, Lambda Using (compare) (a As T, b As T) As Integer
+        Return compare.Compare(a, b)
+    End Lambda)
+    Return output
+End Function

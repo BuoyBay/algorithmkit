@@ -1,0 +1,19 @@
+Import algorithmkit
+
+Class IntegerOrder Implements Ordering Of Integer
+    Public Function Compare(a As Integer, b As Integer) As Integer
+        If a < b Then Return -1
+        If a > b Then Return 1
+        Return 0
+    End Function
+End Class
+
+Sub Main()
+    Dim order As New IntegerOrder
+    Dim values() As Integer = [7, 2, 2, 9]
+    Dim ordered As Array Of Integer = SortedCopy Of Integer(values, order)
+    Dim found As MatchRange = EqualRange Of Integer(ordered, 2, order, 0, Array.Count(ordered))
+    Print found.First
+    Print found.Finish
+    Print values(0)
+End Sub
