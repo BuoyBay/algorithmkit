@@ -1,4 +1,4 @@
-# Comparator-based search and stable sorting
+# Comparator search and stable sorted copies
 
 Generic ordered search, predicate search and stable sorted copies, with no
 native dependencies. `Import algorithmkit`. Use explicit type arguments for
