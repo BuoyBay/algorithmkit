@@ -5,7 +5,7 @@ related: ["index.md", "api.md", "typed-api.md"]
 
 # Getting started
 
-Import algorithmkit and implement `Ordering Of T.Compare(a As T, b As T) As Integer`.
+`Import algorithmkit` and implement `Ordering Of T.Compare(a As T, b As T) As Integer`.
 Return a negative value for before, zero for equivalent, positive for after.
 For Integer use comparisons instead of subtraction to avoid overflow.
 
@@ -14,13 +14,11 @@ Call `SortedCopy Of Integer(items, order)` to clone then sort stably. Call
 for the first possible match/insertion position. Supply explicit type arguments;
 module-qualified generic calls are not supported by the tested compiler.
 
-All ranges are half-open. Every authored example is checked on six targets by the
-repository verifier. See the standalone `examples/algorithmkit/main.bui` consumer.
-
+All ranges are half-open. The program below shows a complete consumer.
 
 Save the following as `main.bui` in your consumer project. Package archives and any dependencies must be installed as described above.
 
-```buoy
+```basic
 Import algorithmkit
 
 Class IntegerOrder Implements Ordering Of Integer

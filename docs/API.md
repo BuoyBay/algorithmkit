@@ -1,9 +1,9 @@
 # AlgorithmKit 0.1.0
 
 Pure Buoy generic ordered search, predicate search and stable sorted copies.
-Import `algorithmkit`. Use explicit type arguments, for example:
+`Import algorithmkit`. Use explicit type arguments, for example:
 
-```buoy
+```basic
 Dim position As Integer = LowerBound Of Integer(items, wanted, order, 0, Array.Count(items))
 ```
 
@@ -57,13 +57,10 @@ use built-in `Array.Sorted`, `Array.Sort` and `Array.SortOrder` for their existi
 comparable-type defaults (including case-insensitive default String ordering).
 There are no ArrayUtils extensions or implicit equality/ordering policies.
 
-## Compiler compatibility and verification
+## Compiler compatibility
 
 The packaged Buoy compiler rejects instantiated generic class nested delegates
-and module-qualified explicit generic free calls. This API uses generic interfaces
-and unqualified explicit generic calls as the tested workaround. Ordinary import
-qualification is therefore a current limitation; avoid importing other free functions
-with the same names. No generic function is deliberately first instantiated inside
-Try (BUI-501). Candidate evidence is in `tests/algorithmkit/defects/`.
-
-Maintainers run the private validation suite before release. See the repository README for public build instructions.
+and module-qualified explicit generic free calls. This API uses generic
+interfaces and unqualified explicit generic calls. Avoid importing unrelated
+free functions with the same names, and instantiate generic calls outside `Try`
+when using toolchains affected by that compiler limitation.

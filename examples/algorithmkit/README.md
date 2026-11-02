@@ -1,19 +1,15 @@
-# AlgorithmKit standalone example
+# AlgorithmKit ordered-search example
 
-From the repository root, check, build, and run with the existing sealed package
-in an isolated directory:
+Expected output is `0`, `2`, `7`: the duplicate range in a sorted copy, followed by the original array's unchanged first element.
+
+From this repository root, with Buoy and BPM installed:
 
 ```sh
+package_source="$PWD"
 example_dir=$(mktemp -d)
-mkdir "$example_dir/packages"
 cp examples/algorithmkit/main.bui "$example_dir/main.bui"
-cp packages/algorithmkit-0.1.0.buipkg "$example_dir/packages/"
-(cd "$example_dir" && buoy main.bui --check --diagnostic-format json && buoy main.bui -o app && ./app)
+(cd "$example_dir" && bpm init && bpm add algorithmkit --path "$package_source" && bpm build main.bui -o app && ./app)
 ```
 
-Isolation avoids discovery of unrelated app resources in this checkout.
-
-Expected output: `0`, `2`, `7` on separate lines: duplicate range `[0, 2)` in the
-sorted copy, followed by the original array's unchanged first element.
-
-Maintainers run the private validation suite before release. See the repository README for public build instructions.
+BPM builds from this checkout's package source and installs its declared
+dependencies into the consumer project.

@@ -67,8 +67,6 @@ Half-open matching range [First, Finish); an absent value has First = Finish.
 | --- |
 | `Boolean` |
 
-## AlgorithmKit functions
-
 ### LowerBound
 
 `Public Function LowerBound Of T(items As Array Of T, value As T, compare As Ordering Of T, first As Integer, finish As Integer) As Integer`

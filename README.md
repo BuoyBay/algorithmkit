@@ -1,7 +1,8 @@
-# Comparator-based search and stable sorting for Buoy
+# Comparator-based search and stable sorting
 
-Pure Buoy generic ordered search, predicate search and stable sorted copies.
-Import `algorithmkit`. Use explicit type arguments for generic calls.
+Generic ordered search, predicate search and stable sorted copies, with no
+native dependencies. `Import algorithmkit`. Use explicit type arguments for
+generic calls.
 
 `order` implements `Ordering Of Integer`; its `Compare(a, b) As Integer` returns
 negative, zero or positive according to the chosen order. Use direct comparisons
@@ -21,7 +22,7 @@ consumer project for reproducible installs.
 
 ## Example
 
-```buoy
+```basic
 Import algorithmkit
 
 Class IntegerOrder Implements Ordering Of Integer
@@ -63,7 +64,6 @@ On your own machine, install Buoy and run:
 buoy ai init --both
 ```
 
-The generated agent files and editor settings stay local and are ignored by Git.
 
 ## Contributing
 
